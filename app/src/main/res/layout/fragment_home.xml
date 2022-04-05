@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeFragment"
+    android:paddingBottom="?attr/actionBarSize"
+    android:noHistory="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#E5E5E5"
+        android:layout_marginBottom="12dp">
+
+        <LinearLayout
+            android:id="@+id/hometoolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:weightSum="8"
+            android:background="#FFFFFF">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_weight="2">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:textColor="#047DF5"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_weight="4.5">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_weight="1"
+                android:gravity="right">
+                <ImageButton
+                    android:id="@+id/wishlistView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_heart_solid"
+                    android:background="@android:color/transparent"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/actionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="302dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/appbar"
+                    android:queryHint="Search Here"
+                    app:iconifiedByDefault="false"
+                    android:queryBackground="@null"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="10dp">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/filter"
+                    android:layout_width="72dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_filter_solid"
+                    android:background="@drawable/filterbutton"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/HScroll_View"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"
+                android:layout_marginRight="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:paddingRight="10dp">
+                    <LinearLayout
+                        android:id="@+id/bikes"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/buttons"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+                        <CheckBox
+                            android:id="@+id/bikes1"
+                            android:layout_width="24dp"
+                            android:layout_height="20dp"
+                            android:button="@drawable/selector_bikes" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/buttons"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+                        <CheckBox
+                            android:id="@+id/mobiles"
+                            android:layout_width="24dp"
+                            android:layout_height="40dp"
+                            android:button="@drawable/selector_mobiles" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/buttons"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+                        <CheckBox
+                            android:id="@+id/electronics"
+                            android:layout_width="24dp"
+                            android:layout_height="40dp"
+                            android:button="@drawable/selector_mobiles" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/buttons"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+                        <CheckBox
+                            android:id="@+id/fashion"
+                            android:layout_width="24dp"
+                            android:layout_height="40dp"
+                            android:button="@drawable/selector_mobiles" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/buttons"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+                        <CheckBox
+                            android:id="@+id/stationary"
+                            android:layout_width="24dp"
+                            android:layout_height="40dp"
+                            android:button="@drawable/selector_mobiles" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/buttons"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+                        <CheckBox
+                            android:id="@+id/books"
+                            android:layout_width="24dp"
+                            android:layout_height="40dp"
+                            android:button="@drawable/selector_mobiles" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/buttons"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+                        <CheckBox
+                            android:id="@+id/furniture"
+                            android:layout_width="24dp"
+                            android:layout_height="40dp"
+                            android:button="@drawable/selector_mobiles" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/buttons"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+                        <CheckBox
+                            android:id="@+id/appliances"
+                            android:layout_width="24dp"
+                            android:layout_height="40dp"
+                            android:button="@drawable/selector_bikes" />
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/products"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/all_products"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

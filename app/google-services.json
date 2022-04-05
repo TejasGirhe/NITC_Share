@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "519694661303",
+    "project_id": "nitcshare-e914e",
+    "storage_bucket": "nitcshare-e914e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519694661303:android:933eb3e44c36ff33eb7f32",
+        "android_client_info": {
+          "package_name": "com.example.nitc_share"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519694661303-42fh5fmvvoiige87ta2ektuc3i57c9f3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nitc_share",
+            "certificate_hash": "8c5ca601175036aafc2b61c63dfcde5cf9cd8207"
+          }
+        },
+        {
+          "client_id": "519694661303-9ps984bsmkj22fkib7hhr5d76k6c96tb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh0EFYFr6eiwdlNwpKXvjmpiN43fYlqTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519694661303-9ps984bsmkj22fkib7hhr5d76k6c96tb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
