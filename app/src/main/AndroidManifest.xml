@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NITC_Share">
         <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".DetailsActivity"
             android:exported="false" />
         <activity

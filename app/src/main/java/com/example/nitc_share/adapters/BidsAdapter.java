@@ -24,7 +24,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class BidsAdapter extends RecyclerView.Adapter<BidsAdapter.MyViewHolder> {
+public class  BidsAdapter extends RecyclerView.Adapter<BidsAdapter.MyViewHolder> {
 
     Context context;
     ArrayList<Bids> list;

@@ -97,6 +97,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.myViewHo
             }
         });
 
+        if(products.getSellerid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            holder.wishlist.setVisibility(View.INVISIBLE);
+        }
+
         holder.wishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -3,7 +3,7 @@ package com.example.nitc_share.constructors;
 public class User {
     String Name,Email,Password,Phone;
     float rating;
-    Integer ratecount;
+    Integer ratecount, bought, sold;
 
     public void setPhone(String phone) {
         Phone = phone;
@@ -41,15 +41,31 @@ public class User {
         return rating;
     }
 
-    public void setRating(Float rating) {
-        this.rating = rating;
-    }
-
     public Integer getRatecount() {
         return ratecount;
     }
 
     public void setRatecount(Integer ratecount) {
         this.ratecount = ratecount;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public void setSold(Integer sold) {
+        this.sold = sold;
+    }
+
+    public Integer getSold() {
+        return sold;
+    }
+
+    public void setBought(Integer bought) {
+        this.bought = bought;
+    }
+
+    public Integer getBought() {
+        return bought;
     }
 }

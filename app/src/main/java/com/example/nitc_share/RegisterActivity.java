@@ -53,77 +53,76 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sName = etName.getText().toString();
+                sEmail = etEmail.getText().toString();
+                sPhone = etPhone.getText().toString();
+                sPassword = etPassword.getText().toString();
+                sCpassword = etCPassword.getText().toString();
+
+
                 if(sName.length() == 0){
                     etName.setError("Please Enter Name");
                     etName.requestFocus();
                 }
-                sEmail = etEmail.getText().toString();
-                if(!sEmail.endsWith("@nitc.ac.in")){
+                else if(!sEmail.endsWith("@nitc.ac.in")){
                     etEmail.setError("Please Enter Valid NITC Email");
                     etEmail.requestFocus();
                 }
-                sPhone = etPhone.getText().toString();
-                if(sPhone.length() != 10){
+                else if(sPhone.length() != 10){
                     etPhone.setError("Please Enter Correct Number");
                     etPhone.requestFocus();
                 }
-                sPassword = etPassword.getText().toString();
-                if(sPassword.length() < 8){
+                else if(sPassword.length() < 8){
                     etPassword.setError("Please Enter password with more than 8 letters");
                     etPassword.requestFocus();
                 }
-                sCpassword = etCPassword.getText().toString();
-                if(!sCpassword.equals(sPassword)){
+                else if(!sCpassword.equals(sPassword)){
                     etCPassword.setError("Password not matching");
                     etCPassword.requestFocus();
-                }
+                } else {
+                    User user = new User();
+                    user.setEmail(sEmail);
+                    user.setName(sName);
+                    user.setPassword(sPassword);
+                    user.setPhone(sPhone);
+                    user.setRating(Float.parseFloat("5"));
+                    user.setRatecount(1);
+                    user.setBought(0);
+                    user.setSold(0);
 
-
-                User user = new User();
-                user.setEmail(sEmail);
-                user.setName(sName);
-                user.setPassword(sPassword);
-                user.setPhone(sPhone);
-                user.setRating(Float.parseFloat("5"));
-                user.setRatecount(1);
-
-
-                if(sEmail.endsWith("@nitc.ac.in")){
-                    firebaseAuth.createUserWithEmailAndPassword(sEmail,sPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(getApplicationContext(),"Registration Success",Toast.LENGTH_SHORT).show();
-                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            Toast.makeText(getApplicationContext(),"Registration Success",Toast.LENGTH_SHORT).show();
-                                            firebaseAuth.getCurrentUser().sendEmailVerification();
-                                            startActivity(new Intent(getApplicationContext(),VerifyEmailActivity.class));
-                                        }else{
-                                            Toast.makeText(getApplicationContext(),"Registration failed",Toast.LENGTH_SHORT).show();
+                    if(sEmail.endsWith("@nitc.ac.in")){
+                        firebaseAuth.createUserWithEmailAndPassword(sEmail,sPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(getApplicationContext(),"Registration Success",Toast.LENGTH_SHORT).show();
+                                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Toast.makeText(getApplicationContext(),"Registration Success",Toast.LENGTH_SHORT).show();
+                                                firebaseAuth.getCurrentUser().sendEmailVerification();
+                                                startActivity(new Intent(getApplicationContext(),VerifyEmailActivity.class));
+                                            }else{
+                                                Toast.makeText(getApplicationContext(),"Registration failed",Toast.LENGTH_SHORT).show();
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
+                                else{
+                                    Toast.makeText(getApplicationContext(),"Registration failed",Toast.LENGTH_SHORT).show();
+                                }
                             }
-                            else{
-                                Toast.makeText(getApplicationContext(),"Registration failed",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                        });
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(),"not NITC",Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),"not NITC",Toast.LENGTH_SHORT).show();
-                }
-
 
             }
         });
-
-
 
     }
 }

@@ -41,7 +41,7 @@
                 android:autofillHints=""
                 android:gravity="center"
                 android:hint="Name"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:padding="14dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/text_color" />
@@ -63,7 +63,7 @@
                 android:autofillHints=""
                 android:gravity="center"
                 android:hint=" Phone Number"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:padding="14dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/text_color" />
@@ -108,7 +108,7 @@
                 android:autofillHints=""
                 android:gravity="center"
                 android:hint=" Password"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 android:padding="14dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/text_color" />
@@ -129,7 +129,7 @@
                 android:autofillHints=""
                 android:gravity="center"
                 android:hint="Confirm Password"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 android:padding="14dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/text_color" />

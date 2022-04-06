@@ -37,6 +37,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class BuyersActivity extends AppCompatActivity {
@@ -72,7 +74,7 @@ public class BuyersActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.bid_history);
         LinearLayout bids = findViewById(R.id.bids);
         LinearLayout details = findViewById(R.id.linearLayout3);
-
+        LinearLayout sellerLayout = findViewById(R.id.sellerLayout);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 //        pname, description, price, image, category, pid, date, time, sellerid, buyerid;
 
@@ -104,8 +106,22 @@ public class BuyersActivity extends AppCompatActivity {
 
                 PSold = products.getSold();
                 tvP_Base.setText(products.getBaseprice());
-//                tvP_Price.setText(products.getPrice());
 
+                userReference = FirebaseDatabase.getInstance().getReference("Users").child(products.getSellerid());
+                userReference.keepSynced(true);
+                userReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        User user = snapshot.getValue(User.class);
+                        tvP_Seller.setText(user.getName());
+                        sellerRating.setRating(user.getRating());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 if(PSold.equals("Yes")){
                     if(placeBid.getVisibility() != View.GONE){
                         placeBid.setVisibility(View.GONE);
@@ -142,21 +158,7 @@ public class BuyersActivity extends AppCompatActivity {
                     }
                 }
 
-                    userReference = FirebaseDatabase.getInstance().getReference("Users").child(products.getSellerid());
-                    userReference.keepSynced(true);
-                    userReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            User user = snapshot.getValue(User.class);
-                            tvP_Seller.setText(user.getName());
-                            sellerRating.setRating(user.getRating());
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
 
 
                 if(currentUser.getUid().equals(products.getBuyerid()) || products.getBuyerid().equals("null")){
@@ -227,7 +229,44 @@ public class BuyersActivity extends AppCompatActivity {
             }
         });
 
+        sellerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productRef.addValueEventListener(new ValueEventListener() {
+                    Intent intent =  new Intent(getApplicationContext(), ProfileActivity.class);
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Products products = snapshot.getValue(Products.class);
+                        if(products.getSold().equals("Yes")){
+                            if(products.getBuyerid().equals(currentUser.getUid())){
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(products.getSellerid());
+                                ref.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        User user = snapshot.getValue(User.class);
+                                        intent.putExtra("name", user.getName());
+                                        intent.putExtra("email", user.getEmail());
+                                        intent.putExtra("rating", user.getRating());
+                                        intent.putExtra("phone", user.getPhone());
+                                        startActivity(intent);
+                                    }
 
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
         placeBid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -485,10 +524,21 @@ public class BuyersActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list = new ArrayList<>();
                 list.clear();
+                int curr = 0;
+                int prev = 0;
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Bids bids = ds.getValue(Bids.class);
                     if (curruser.getUid().equals(bids.getBidderid())) {
                         list.add(0, bids);
+                        if(bids.getBidCount()==1) {
+                            curr = Integer.parseInt(bids.getPrice());
+                        }else {
+                            prev = curr;
+                            curr = Integer.parseInt(bids.getPrice());
+                            if(prev == curr){
+                                list.remove(bids);
+                            }
+                        }
                         FirebaseDatabase.getInstance().getReference("Products").child(Pid).child("price").setValue(bids.getPrice());
                     }
                 }
@@ -501,6 +551,12 @@ public class BuyersActivity extends AppCompatActivity {
                     if(BidsLL.getVisibility() != View.VISIBLE){
                         BidsLL.setVisibility(View.VISIBLE);
                     }
+                }
+                Set<Bids> set = new HashSet<>(list);
+                list.clear();
+                list.addAll(set);
+                for(Bids b: list){
+                    Toast.makeText(BuyersActivity.this, b.getPrice(), Toast.LENGTH_SHORT).show();
                 }
                 SelfBidsAdapter bidsAdapter = new SelfBidsAdapter(BuyersActivity.this, list, Pid);
                 recyclerView1.setAdapter(bidsAdapter);

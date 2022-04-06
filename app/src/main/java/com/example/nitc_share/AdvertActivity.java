@@ -593,8 +593,20 @@ public class AdvertActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                     list = new ArrayList<>();
                     list.clear();
+                    int curr = 0;
+                    int prev = 0;
                     for (DataSnapshot ds: snapshot.getChildren()) {
-                        list.add(0,ds.getValue(Bids.class));
+                        Bids bids = ds.getValue(Bids.class);
+                        list.add(0,bids);
+                        if(bids.getBidCount()==1) {
+                            curr = Integer.parseInt(bids.getPrice());
+                        }else {
+                            prev = curr;
+                            curr = Integer.parseInt(bids.getPrice());
+                            if(prev == curr){
+                                list.remove(bids);
+                            }
+                        }
                     }
                     RecyclerView recyclerView1 = findViewById(R.id.bid_history);
                     BidsAdapter bidsAdapter = new BidsAdapter(AdvertActivity.this,list);
