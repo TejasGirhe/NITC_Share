@@ -89,6 +89,11 @@ public class LoginActivity extends AppCompatActivity {
                 s_email = etemail.getText().toString();
                 s_password = etpass.getText().toString();
 
+                if( s_email != null && !s_email.endsWith("@nitc.ac.in"))
+                {
+                    Toast.makeText(getApplicationContext(),"not NITC email",Toast.LENGTH_SHORT).show();
+                }
+
                 SharedPreferences.Editor editor= sharedPreferences.edit();
                 editor.putString(KEY_EMAIL,s_email);
                 editor.putString(KEY_PASSWORD,s_password);
@@ -103,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                     etpass.requestFocus();
                 }
 
-                if(s_email.endsWith("@nitc.ac.in")){
+                if(s_email != null && !s_email.equals("") && s_email.endsWith("@nitc.ac.in") && s_password != null && !s_password.equals("")){
                     fAuth.signInWithEmailAndPassword(s_email,s_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -123,10 +128,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),"not NITC",Toast.LENGTH_SHORT).show();
                 }
             }
         });

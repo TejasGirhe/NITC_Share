@@ -125,27 +125,27 @@ public class HomeFragment extends Fragment{
         CheckBox bikes1 = view.findViewById(R.id.bikes1);
         CompoundButtonCompat.setButtonTintList(bikes1, darkStateList);
 
-        bikes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bike = !bike;
-                if(bike){
-                    categories.add(0,"Bikes");
-                    ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.teal_200);
-                    CompoundButtonCompat.setButtonTintList(bikes1, darkStateList);
-                    filter(categories);
-                }else{
-                    categories.remove("Bikes");
-                    ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.white);
-                    CompoundButtonCompat.setButtonTintList(bikes1, darkStateList);
-                    if(categories.size() == 0){
-                        viewAll();
-                    }else{
-                        filter(categories);
-                    }
-                }
-            }
-        });
+//        bikes.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                bike = !bike;
+//                if(bike){
+//                    categories.add(0,"Bikes");
+//                    ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.teal_200);
+//                    CompoundButtonCompat.setButtonTintList(bikes1, darkStateList);
+//                    filter(categories);
+//                }else{
+//                    categories.remove("Bikes");
+//                    ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.white);
+//                    CompoundButtonCompat.setButtonTintList(bikes1, darkStateList);
+//                    if(categories.size() == 0){
+//                        viewAll();
+//                    }else{
+//                        filter(categories);
+//                    }
+//                }
+//            }
+//        });
         bikes1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

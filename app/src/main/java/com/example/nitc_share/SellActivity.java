@@ -2,9 +2,12 @@ package com.example.nitc_share;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -107,7 +110,18 @@ public class SellActivity extends AppCompatActivity implements AdapterView.OnIte
         AddNewProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ValidateProductData();
+
+                AlertDialog.Builder builder =  new AlertDialog.Builder(SellActivity.this);
+                builder.setTitle("Create Ad").setMessage("Are you sure ?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                ValidateProductData();
+                            }
+                        }).setNegativeButton("No", null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
     }

@@ -57,6 +57,7 @@ public class AdvertActivity extends AppCompatActivity {
     ArrayList<Bids> list;
     RecyclerView recyclerView;
     RatingBar ratingBar;
+    DatabaseReference ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +111,7 @@ public class AdvertActivity extends AppCompatActivity {
         // soldornot
         // sold no p,f,d show rate if rated hide
         // not sold hide rate c=s show f,d or c=t show p
+        ref = FirebaseDatabase.getInstance().getReference("Users");
 
         productRef = FirebaseDatabase.getInstance().getReference("Products").child(Pid);
         productRef.keepSynced(true);
@@ -315,6 +317,64 @@ public class AdvertActivity extends AppCompatActivity {
                                 userReference = FirebaseDatabase.getInstance().getReference().child("Products");
                                 userReference.child(Pid).child("sold").setValue("Yes");
                                 userReference.child(Pid).child("deleteOn").setValue("");
+
+                                ref = FirebaseDatabase.getInstance().getReference("Users");
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products");
+                                reference.child(Pid).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        Products products = snapshot.getValue(Products.class);
+                                        ref = ref.child(products.getSellerid());
+                                        ref.addValueEventListener(new ValueEventListener() {
+                                            boolean flag = false;
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if(!flag){
+                                                    User user = snapshot.getValue(User.class);
+                                                    if(user != null){
+                                                        int sold = user.getSold();
+                                                        sold = sold + 1;
+                                                        ref.child("sold").setValue(sold);
+                                                        flag = true;
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                        ref = FirebaseDatabase.getInstance().getReference("Users");
+                                        ref = ref.child(products.getBuyerid());
+                                        ref.addValueEventListener(new ValueEventListener() {
+                                            boolean flag = false;
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if(!flag){
+                                                    User user = snapshot.getValue(User.class);
+                                                    if(user != null){
+                                                        int buys = user.getSold();
+                                                        buys = buys + 1;
+                                                        ref.child("bought").setValue(buys);
+                                                        flag = true;
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
 
                                 if(finaliseAd.getVisibility() != View.GONE){
                                     finaliseAd.setVisibility(View.GONE);

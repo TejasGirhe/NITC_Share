@@ -100,22 +100,31 @@ public class EditProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
-                builder.setTitle("Edit Profile").setMessage("Are you sure?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                if(etName.getText().toString().equals("") || etName.getText().toString().equals(null)){
+                    etName.setError("Please Enter Valid Name");
+                    etName.requestFocus();
+                }else if(etPhone.getText().toString().equals("") || etPhone.getText().toString().length()!=10){
+                    etPhone.setError("Please Enter Valid Contact");
+                    etPhone.requestFocus();
+                }else{
+                    AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
+                    builder.setTitle("Edit Profile").setMessage("Are you sure?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
-                                reference.child("name").setValue(etName.getText().toString());
-                                reference.child("phone").setValue(etPhone.getText().toString());
+                                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                                    reference.child("name").setValue(etName.getText().toString());
+                                    reference.child("phone").setValue(etPhone.getText().toString());
 
-                                Fragment fragment = new ProfileFragment();
-                                getParentFragmentManager().beginTransaction().replace(R.id.body_container,fragment).commit();
-                            }
-                        }).setNegativeButton("No", null);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                                    Fragment fragment = new ProfileFragment();
+                                    getParentFragmentManager().beginTransaction().replace(R.id.body_container,fragment).commit();
+                                }
+                            }).setNegativeButton("No", null);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+
             }
         });
         return view;

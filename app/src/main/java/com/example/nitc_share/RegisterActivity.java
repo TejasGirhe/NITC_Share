@@ -94,7 +94,6 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
-                                    Toast.makeText(getApplicationContext(),"Registration Success",Toast.LENGTH_SHORT).show();
                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -104,20 +103,17 @@ public class RegisterActivity extends AppCompatActivity {
                                                 firebaseAuth.getCurrentUser().sendEmailVerification();
                                                 startActivity(new Intent(getApplicationContext(),VerifyEmailActivity.class));
                                             }else{
-                                                Toast.makeText(getApplicationContext(),"Registration failed",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(),"Registration Failed",Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
-                                }
-                                else{
-                                    Toast.makeText(getApplicationContext(),"Registration failed",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                     }
                     else
                     {
-                        Toast.makeText(getApplicationContext(),"not NITC",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Please Enter NITC Email",Toast.LENGTH_SHORT).show();
                     }
                 }
 

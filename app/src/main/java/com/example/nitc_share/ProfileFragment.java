@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.nitc_share.constructors.Products;
 import com.example.nitc_share.constructors.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -56,7 +58,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    TextView tvName, tvPhone, tvEmail, tvPassword;
+    TextView tvName, tvPhone, tvEmail, tvPassword, purchases, sold;
 
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
@@ -65,6 +67,7 @@ public class ProfileFragment extends Fragment {
     DatabaseReference reference;
     RatingBar ratingBar;
     SharedPreferences sharedPreferences;
+    int sales = 0, buys = 0;
 
     private  static  final String SHARED_PREF_NAME = "myPref";
     private  static  final String KEY_EMAIL = "email";
@@ -83,6 +86,8 @@ public class ProfileFragment extends Fragment {
         tvEmail = view.findViewById(R.id.tvEmail);
         tvPhone = view.findViewById(R.id.tvPhone);
         ratingBar = view.findViewById(R.id.profile_rating);
+        sold = view.findViewById(R.id.sold);
+        purchases = view.findViewById(R.id.purchases);
         ratingBar.setClickable(false);
         ratingBar.setFocusable(false);
         TextView logout = view.findViewById(R.id.logoutBtn);
@@ -91,6 +96,7 @@ public class ProfileFragment extends Fragment {
         ImageButton Editimg = view.findViewById(R.id.editImg);
 
         sharedPreferences = getContext().getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +160,29 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+//        reference = FirebaseDatabase.getInstance().getReference("Products");
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Products products = snapshot.getValue(Products.class);
+////                Toast.makeText(getContext(), products.getPname(), Toast.LENGTH_SHORT).show();
+//
+//                if(products.getSellerid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+//                    sales = sales + 1;
+//                }
+//                sold.setText(String.valueOf(sales));
+//
+//                if(products.getBuyerid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+//                    buys = buys + 1;
+//                }
+//                sold.setText(String.valueOf(buys));
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
         Edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,6 +220,24 @@ public class ProfileFragment extends Fragment {
                 bundle.putString("rating", String.valueOf(ratingBar.getRating()));
                 fragment.setArguments(bundle);
                 getParentFragmentManager().beginTransaction().replace(R.id.body_container,fragment).commit();
+            }
+        });
+
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if (user != null) {
+                    sold.setText(user.getSold().toString());
+                    purchases.setText(user.getBought().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
