@@ -72,8 +72,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.myViewHo
             e.printStackTrace();
         }
         DateFormat dateFormat = new SimpleDateFormat("MMM dd");
-        String strDate = dateFormat.format(date1);
-        holder.time.setText(strDate);
+        if(date1!=null){
+            String strDate = dateFormat.format(date1);
+            holder.time.setText(strDate);
+        }
 
         Glide.with(holder.imageView.getContext()).load(products.getImage()).into(holder.imageView);
 

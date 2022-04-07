@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,13 +10,12 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="15">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/imagebg"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -43,7 +42,7 @@
                 android:layout_weight="3"
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -158,50 +157,49 @@
                     </LinearLayout>
                 </LinearLayout>
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:weightSum="3"-->
-<!--                    android:orientation="vertical"-->
-<!--                    android:background="@drawable/appbar"-->
-<!--                    android:padding="15dp">-->
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center"-->
-<!--                        android:orientation="horizontal"-->
-<!--                        android:paddingLeft="10dp">-->
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    android:weightSum="3"-->
+                <!--                    android:orientation="vertical"-->
+                <!--                    android:background="@drawable/appbar"-->
+                <!--                    android:padding="15dp">-->
+                <!--                    <LinearLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:gravity="center"-->
+                <!--                        android:orientation="horizontal"-->
+                <!--                        android:paddingLeft="10dp">-->
 
 
-<!--                    </LinearLayout>-->
+                <!--                    </LinearLayout>-->
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:orientation="horizontal"-->
-<!--                        android:paddingLeft="10dp">-->
+                <!--                    <LinearLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_gravity="center"-->
+                <!--                        android:gravity="center"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:orientation="horizontal"-->
+                <!--                        android:paddingLeft="10dp">-->
 
-<!--                    </LinearLayout>-->
+                <!--                    </LinearLayout>-->
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:paddingLeft="10dp"-->
-<!--                        android:gravity="center">-->
+                <!--                    <LinearLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:paddingLeft="10dp"-->
+                <!--                        android:gravity="center">-->
 
-<!--                    </LinearLayout>-->
-<!--                </LinearLayout>-->
+                <!--                    </LinearLayout>-->
+                <!--                </LinearLayout>-->
             </LinearLayout>
             <LinearLayout
-                android:layout_weight="2"
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -312,7 +310,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/bids"
@@ -330,9 +328,8 @@
                     android:weightSum="1">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="horizontal">
                         <EditText
@@ -388,9 +385,9 @@
             <LinearLayout
                 android:id="@+id/bids"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/bidlistbg"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:background="@drawable/appbar"
+                android:gravity="center|bottom"
                 android:orientation="vertical"
                 android:padding="10dp"
                 android:weightSum="4"
@@ -401,7 +398,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <TextView
@@ -415,7 +412,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="3">
 
                     <ScrollView
@@ -434,4 +431,4 @@
 
         </LinearLayout>
 
-</FrameLayout>
+</ScrollView>

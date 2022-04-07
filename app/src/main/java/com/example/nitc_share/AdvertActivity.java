@@ -129,7 +129,11 @@ public class AdvertActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
-                        tvP_Buyer.setText(user.getName());
+                        if(user != null){
+                            tvP_Buyer.setText(user.getName());
+                            sellerRating.setRating(user.getRating());
+                            sellerRating.setClickable(false);
+                        }
                     }
 
                     @Override
@@ -232,8 +236,10 @@ public class AdvertActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             User user = snapshot.getValue(User.class);
-                            tvP_Buyer.setText(user.getName());
-                            sellerRating.setRating(user.getRating());
+                            if(user!=null){
+                                tvP_Buyer.setText(user.getName());
+                                sellerRating.setRating(user.getRating());
+                            }
                         }
 
                         @Override
@@ -335,55 +341,64 @@ public class AdvertActivity extends AppCompatActivity {
                                 userReference.child(Pid).child("sold").setValue("Yes");
                                 userReference.child(Pid).child("deleteOn").setValue("");
 
-                                ref = FirebaseDatabase.getInstance().getReference("Users");
+
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products");
                                 reference.child(Pid).addValueEventListener(new ValueEventListener() {
+                                    boolean progress = true;
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        Products products = snapshot.getValue(Products.class);
-                                        ref = ref.child(products.getSellerid());
-                                        ref.addValueEventListener(new ValueEventListener() {
-                                            boolean flag = false;
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                if(!flag){
-                                                    User user = snapshot.getValue(User.class);
-                                                    if(user != null){
-                                                        int sold = user.getSold();
-                                                        sold = sold + 1;
-                                                        ref.child("sold").setValue(sold);
-                                                        flag = true;
+                                        if(progress){
+                                            Products products = snapshot.getValue(Products.class);
+                                            if(products!=null){
+                                                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users");
+                                                ref1 = ref1.child(products.getSellerid());
+                                                ref1.addValueEventListener(new ValueEventListener() {
+                                                    boolean flag = false;
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        if(!flag){
+                                                            User user = snapshot.getValue(User.class);
+                                                            if(user != null){
+                                                                int sold = user.getSold();
+                                                                sold = sold + 1;
+                                                                FirebaseDatabase.getInstance().getReference("Users").child(products.getSellerid()).child("sold").setValue(sold);
+                                                                flag = true;
+                                                            }
+                                                        }
                                                     }
-                                                }
-                                            }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
 
-                                            }
-                                        });
-                                        ref = FirebaseDatabase.getInstance().getReference("Users");
-                                        ref = ref.child(products.getBuyerid());
-                                        ref.addValueEventListener(new ValueEventListener() {
-                                            boolean flag = false;
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                if(!flag){
-                                                    User user = snapshot.getValue(User.class);
-                                                    if(user != null){
-                                                        int buys = user.getSold();
-                                                        buys = buys + 1;
-                                                        ref.child("bought").setValue(buys);
-                                                        flag = true;
                                                     }
-                                                }
+                                                });
+                                                DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users");
+                                                ref2 = ref2.child(products.getBuyerid());
+                                                ref2.addValueEventListener(new ValueEventListener() {
+                                                    boolean flag = false;
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        if(!flag){
+                                                            User user = snapshot.getValue(User.class);
+                                                            if(user != null){
+                                                                int buys = user.getSold();
+                                                                buys = buys + 1;
+                                                                FirebaseDatabase.getInstance().getReference("Users").child(products.getBuyerid()).child("bought").setValue(buys);
+                                                                flag = true;
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+                                                progress = false;
                                             }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
+                                        }
 
-                                            }
-                                        });
                                     }
 
                                     @Override
@@ -742,10 +757,29 @@ public class AdvertActivity extends AppCompatActivity {
                 list.addAll(set);
                 list = sort(list);
                 Collections.reverse(list);
+
+                ArrayList<Bids> list1 = new ArrayList<>();
+                Bids currbid = null;
+                Bids prevbid = null;
+                for(int i = 0; i < list.size(); i++){
+                    if(i == 0){
+                        currbid = list.get(i);
+                        list1.add(0,currbid);
+                    }else{
+                        prevbid = currbid;
+                        currbid = list.get(i);
+                        if(!prevbid.getPrice().equals(currbid.getPrice())){
+                            list1.add(0,currbid);
+                        }
+                    }
+
+                }
+                Collections.reverse(list1);
+
 //                databaseReference.setValue(list);
 
                 RecyclerView recyclerView1 = findViewById(R.id.bid_history);
-                BidsAdapter bidsAdapter = new BidsAdapter(AdvertActivity.this,list);
+                BidsAdapter bidsAdapter = new BidsAdapter(AdvertActivity.this,list1);
                 recyclerView1.setAdapter(bidsAdapter);
                 bidsAdapter.notifyDataSetChanged();
             }
@@ -768,6 +802,17 @@ public class AdvertActivity extends AppCompatActivity {
         {
             return Integer.parseInt(a.getPrice()) - Integer.parseInt(b.getPrice());
         }
+    }
+    public static <T> ArrayList<T> removeDuplicates(ArrayList<T> list)
+    {
+        ArrayList<T> newList = new ArrayList<T>();
+        for (T element : list) {
+            if (!newList.contains(element)) {
+                newList.add(element);
+            }
+        }
+
+        return newList;
     }
 
 }

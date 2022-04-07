@@ -105,9 +105,13 @@ public class PurchaseFragment extends Fragment {
                                         Bids bids;
                                         for(DataSnapshot ds: snapshot.getChildren()){
                                             bids = ds.getValue(Bids.class);
-                                            if(bids.getBidderid().equals(user.getUid())){
+                                            if(bids.getBidderid().equals(user.getUid()) && products.getSold().equals("No")){
                                                 list.remove(products);
                                                 list.add(0, products);
+                                            }
+                                            else if(products.getSold().equals("Yes") && products.getBuyerid().equals(user.getUid())){
+                                                list.remove(products);
+                                                list.add(0,products);
                                             }
                                         }
 
