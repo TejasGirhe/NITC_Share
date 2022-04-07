@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -17,12 +18,19 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nitc_share.constructors.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EditProfileFragment extends Fragment {
 
@@ -33,6 +41,7 @@ public class EditProfileFragment extends Fragment {
     RatingBar ratingBar;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
+    TextView  purchases, sold;
     private static final String ARG_PARAM1 = "name";
     private static final String ARG_PARAM2 = "email";
     private static final String ARG_PARAM3 = "phone";
@@ -78,6 +87,8 @@ public class EditProfileFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
+        sold = view.findViewById(R.id.sold);
+        purchases = view.findViewById(R.id.purchases);
         etEmail = view.findViewById(R.id.tvEmail);
         etPhone = view.findViewById(R.id.tvPhone);
         etName = view.findViewById(R.id.tvName);
@@ -106,7 +117,11 @@ public class EditProfileFragment extends Fragment {
                 }else if(etPhone.getText().toString().equals("") || etPhone.getText().toString().length()!=10){
                     etPhone.setError("Please Enter Valid Contact");
                     etPhone.requestFocus();
-                }else{
+                }else if(!isValidMobileNo(etPhone.getText().toString())) {
+                    etPhone.setError("Please Enter Valid Contact");
+                    etPhone.requestFocus();
+                }else
+                    {
                     AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
                     builder.setTitle("Edit Profile").setMessage("Are you sure?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -117,6 +132,7 @@ public class EditProfileFragment extends Fragment {
                                     reference.child("name").setValue(etName.getText().toString());
                                     reference.child("phone").setValue(etPhone.getText().toString());
 
+                                    Toast.makeText(getContext(), "Your profile was successfully updated", Toast.LENGTH_SHORT).show();
                                     Fragment fragment = new ProfileFragment();
                                     getParentFragmentManager().beginTransaction().replace(R.id.body_container,fragment).commit();
                                 }
@@ -127,6 +143,36 @@ public class EditProfileFragment extends Fragment {
 
             }
         });
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if (user != null) {
+                    sold.setText(user.getSold().toString());
+                    purchases.setText(user.getBought().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         return view;
+    }
+
+    public static boolean isValidMobileNo(String str)
+    {
+        for(int i = 0; i < 10; i++){
+            if(!(str.charAt(i) >= '0' && str.charAt(i) <= '9'))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

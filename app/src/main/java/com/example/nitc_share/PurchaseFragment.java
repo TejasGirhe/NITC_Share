@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.nitc_share.adapters.ProductAdapter;
 import com.example.nitc_share.adapters.SPAdapter;
+import com.example.nitc_share.constructors.Bids;
 import com.example.nitc_share.constructors.Products;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -87,20 +88,47 @@ public class PurchaseFragment extends Fragment {
         if(databaseReference!= null){
             list = new ArrayList<>();
             databaseReference.addValueEventListener(new ValueEventListener() {
+                boolean progress = false;
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()){
+                    if(snapshot.exists() && !progress){
                         list.clear();
                         for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                             Products products = dataSnapshot.getValue(Products.class);
-                            if(products.getBuyerid().equals(user.getUid()) || products.getBuyerid().equals(null)){
-                                list.add(0,products);
-                            }
-                        }
 
-                        SPAdapter spAdapter = new SPAdapter(getContext(),list);
-                        recyclerView.setAdapter(spAdapter);
-                        spAdapter.notifyDataSetChanged();
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Bids").child(products.getPid());
+                            ref.addValueEventListener(new ValueEventListener() {
+                                boolean flag = true;
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(flag){
+                                        Bids bids;
+                                        for(DataSnapshot ds: snapshot.getChildren()){
+                                            bids = ds.getValue(Bids.class);
+                                            if(bids.getBidderid().equals(user.getUid())){
+                                                list.remove(products);
+                                                list.add(0, products);
+                                            }
+                                        }
+
+                                        SPAdapter spAdapter = new SPAdapter(getContext(),list);
+                                        recyclerView.setAdapter(spAdapter);
+                                        spAdapter.notifyDataSetChanged();
+                                        flag = false;
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+//                            if(products.getBuyerid().equals(user.getUid()) || products.getBuyerid().equals(null)){
+//                                list.add(0,products);
+//                            }
+                        }
+                        progress = true;
                     }
                 }
 

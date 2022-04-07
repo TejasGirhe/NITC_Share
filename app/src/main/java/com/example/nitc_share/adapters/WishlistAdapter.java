@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.nitc_share.AdvertActivity;
+import com.example.nitc_share.BuyersActivity;
 import com.example.nitc_share.R;
 import com.example.nitc_share.constructors.Bids;
 import com.example.nitc_share.constructors.Products;
@@ -153,16 +154,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.myView
                                         wishlist.add(0,ds.getValue(String.class));
                                     }
                                 }
-                                databaseReference.setValue(wishlist).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            Toast.makeText(context.getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
-                                        }else{
-                                            Toast.makeText(context.getApplicationContext(),"Fail",Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
+                                databaseReference.setValue(wishlist);
 
                                 list.clear();
                                 progress = true;
@@ -182,7 +174,12 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.myView
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, AdvertActivity.class);
+                Intent intent;
+                if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(products.getSellerid())){
+                    intent = new Intent(context, AdvertActivity.class);
+                }else{
+                    intent = new Intent(context, BuyersActivity.class);
+                }
 //                pname, description, price, image, category, pid, date, time, sellerid, buyerid;
 
                 intent.putExtra("Name",products.getPname());

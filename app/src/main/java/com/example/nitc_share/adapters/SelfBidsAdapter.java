@@ -156,9 +156,6 @@ public class SelfBidsAdapter extends RecyclerView.Adapter<SelfBidsAdapter.MyView
             bidderCount = itemView.findViewById(R.id.bidderCount);
             bidder = itemView.findViewById(R.id.bidderName);
             delete = itemView.findViewById(R.id.deleteBid);
-
-
-
         }
     }
 }

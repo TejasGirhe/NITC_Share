@@ -53,23 +53,20 @@ public class SPAdapter extends RecyclerView.Adapter<SPAdapter.myViewHolder >{
         Glide.with(holder.imageView.getContext()).load(products.getImage()).into(holder.imageView);
         holder.BPrice.setText(products.getBaseprice());
         if(products.getSold().equals("Yes")){
-            if(products.getBuyerid().equals(holder.user.getUid())){
-                holder.Status.setText("Bought");
-                holder.Status.setTextSize(15);
-                holder.statusbg.setBackgroundResource(R.drawable.solidblueborder);
-                holder.Status.setTextColor(Color.WHITE);
-
-            }
             if(products.getSellerid().equals(holder.user.getUid())){
                 holder.Status.setText("Sold");
-                holder.Status.setTextSize(15);
+                holder.Status.setTextSize(13);
                 holder.statusbg.setBackgroundResource(R.drawable.solidblueborder);
                 holder.Status.setTextColor(Color.WHITE);
-
+            }else{
+                holder.Status.setText("Bought");
+                holder.Status.setTextSize(13);
+                holder.statusbg.setBackgroundResource(R.drawable.solidblueborder);
+                holder.Status.setTextColor(Color.WHITE);
             }
         }else{
             holder.Status.setText("Live");
-            holder.Status.setTextSize(15);
+            holder.Status.setTextSize(13);
             holder.Status.setTextColor(Color.parseColor("#047DF5"));
             holder.statusbg.setBackgroundResource(R.drawable.blueborder);
         }

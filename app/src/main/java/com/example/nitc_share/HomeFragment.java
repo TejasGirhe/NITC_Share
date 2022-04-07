@@ -159,6 +159,7 @@ public class HomeFragment extends Fragment{
                     ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.white);
                     CompoundButtonCompat.setButtonTintList(bikes1, darkStateList);
                     if(categories.size() == 0){
+//                        Toast.makeText(getContext(), "No such product in this category", Toast.LENGTH_SHORT).show();
                         viewAll();
                     }else{
                         filter(categories);
@@ -182,6 +183,7 @@ public class HomeFragment extends Fragment{
                     ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.white);
                     CompoundButtonCompat.setButtonTintList(mobiles, darkStateList);
                     if(categories.size() == 0){
+//                        Toast.makeText(getContext(), "No such product in this category", Toast.LENGTH_SHORT).show();
                         viewAll();
                     }else{
                         filter(categories);
@@ -227,6 +229,7 @@ public class HomeFragment extends Fragment{
                     ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.white);
                     CompoundButtonCompat.setButtonTintList(fashion, darkStateList);
                     if(categories.size() == 0){
+//                        Toast.makeText(getContext(), "No such product in this category", Toast.LENGTH_SHORT).show();
                         viewAll();
                     }else{
                         filter(categories);
@@ -250,6 +253,7 @@ public class HomeFragment extends Fragment{
                     ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.white);
                     CompoundButtonCompat.setButtonTintList(stationary, darkStateList);
                     if(categories.size() == 0){
+//                        Toast.makeText(getContext(), "No such product in this category", Toast.LENGTH_SHORT).show();
                         viewAll();
                     }else{
                         filter(categories);
@@ -272,6 +276,7 @@ public class HomeFragment extends Fragment{
                     ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.white);
                     CompoundButtonCompat.setButtonTintList(books, darkStateList);
                     if(categories.size() == 0){
+//                        Toast.makeText(getContext(), "No such product in this category", Toast.LENGTH_SHORT).show();
                         viewAll();
                     }else{
                         filter(categories);
@@ -294,6 +299,7 @@ public class HomeFragment extends Fragment{
                     ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.white);
                     CompoundButtonCompat.setButtonTintList(furniture, darkStateList);
                     if(categories.size() == 0){
+//                        Toast.makeText(getContext(), "No such product in this category", Toast.LENGTH_SHORT).show();
                         viewAll();
                     }else{
                         filter(categories);
@@ -316,6 +322,7 @@ public class HomeFragment extends Fragment{
                     ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.white);
                     CompoundButtonCompat.setButtonTintList(appliances, darkStateList);
                     if(categories.size() == 0){
+//                        Toast.makeText(getContext(), "No such product in this category", Toast.LENGTH_SHORT).show();
                         viewAll();
                     }else{
                         filter(categories);
@@ -389,6 +396,7 @@ public class HomeFragment extends Fragment{
 
         if(databaseReference!= null){
             list = new ArrayList<>();
+            databaseReference = FirebaseDatabase.getInstance().getReference("Products");
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -447,6 +455,9 @@ public class HomeFragment extends Fragment{
                                         }
 
                                     }
+                                }
+                                if(list.isEmpty() && !newText.equals("")){
+                                    Toast.makeText(getContext(), "Product not Found", Toast.LENGTH_SHORT).show();
                                 }
                                 productAdapter = new ProductAdapter(getContext(),list);
                                 recyclerView.setAdapter(productAdapter);

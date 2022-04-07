@@ -69,7 +69,7 @@ public class WishlistActivity extends AppCompatActivity {
                     }
 
                     if(wishlist.size() == 0){
-                        Toast.makeText(getApplicationContext(),"Empty Wishlist",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Wishlist is Empty",Toast.LENGTH_SHORT).show();
                         wishlistAdapter = new WishlistAdapter(getApplicationContext(),list);
                         recyclerView.setAdapter(wishlistAdapter);
                         wishlistAdapter.notifyDataSetChanged();
@@ -90,10 +90,6 @@ public class WishlistActivity extends AppCompatActivity {
                                             }
                                         }
                                     }
-//                                    for(Products p : list){
-//                                        Toast.makeText(getApplicationContext(),p.getPname(),Toast.LENGTH_SHORT).show();
-//                                    }
-
                                 }
                                 wishlistAdapter = new WishlistAdapter(getApplicationContext(),list);
                                 recyclerView.setAdapter(wishlistAdapter);

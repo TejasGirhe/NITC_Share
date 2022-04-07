@@ -29,6 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -110,9 +113,11 @@ public class ProfileFragment extends Fragment {
                                 SharedPreferences.Editor editor= sharedPreferences.edit();
                                 editor.clear();
                                 editor.commit();
+                                Toast.makeText(getContext(), "You have successfully logged out", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getContext(), LoginActivity.class);
                                 startActivity(intent);
                                 getActivity().finish();
+
                             }
                         }).setNegativeButton("No", null);
                 AlertDialog alertDialog = builder.create();
@@ -131,6 +136,7 @@ public class ProfileFragment extends Fragment {
                                 SharedPreferences.Editor editor= sharedPreferences.edit();
                                 editor.clear();
                                 editor.commit();
+                                Toast.makeText(getContext(), "You have successfully logged out", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getContext(), LoginActivity.class);
                                 startActivity(intent);
                                 getActivity().finish();
@@ -244,4 +250,5 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+
 }

@@ -157,7 +157,7 @@
                             android:id="@+id/electronics"
                             android:layout_width="24dp"
                             android:layout_height="40dp"
-                            android:button="@drawable/selector_mobiles" />
+                            android:button="@drawable/selector_electronics" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -171,7 +171,7 @@
                             android:id="@+id/fashion"
                             android:layout_width="24dp"
                             android:layout_height="40dp"
-                            android:button="@drawable/selector_mobiles" />
+                            android:button="@drawable/selector_fashion" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="48dp"
@@ -184,7 +184,7 @@
                             android:id="@+id/stationary"
                             android:layout_width="24dp"
                             android:layout_height="40dp"
-                            android:button="@drawable/selector_mobiles" />
+                            android:button="@drawable/selector_stationary" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -198,7 +198,7 @@
                             android:id="@+id/books"
                             android:layout_width="24dp"
                             android:layout_height="40dp"
-                            android:button="@drawable/selector_mobiles" />
+                            android:button="@drawable/selector_books" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="48dp"
@@ -211,7 +211,7 @@
                             android:id="@+id/furniture"
                             android:layout_width="24dp"
                             android:layout_height="40dp"
-                            android:button="@drawable/selector_mobiles" />
+                            android:button="@drawable/selector_furniture" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="48dp"
@@ -224,7 +224,7 @@
                             android:id="@+id/appliances"
                             android:layout_width="24dp"
                             android:layout_height="40dp"
-                            android:button="@drawable/selector_bikes" />
+                            android:button="@drawable/selector_appliances" />
                     </LinearLayout>
                 </LinearLayout>
             </HorizontalScrollView>

@@ -53,22 +53,23 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:padding="10dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:background="@drawable/appbar"
-                >
+                android:gravity="center"
+                android:padding="10dp">
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3"
+                    android:orientation="horizontal">
 
-                    android:padding="10dp">
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                        >
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -76,11 +77,33 @@
                             android:hint="Description"
                             android:inputType="textMultiLine"
                             />
-
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:padding="5dp">
+                        <TextView
+                            android:id="@+id/tvP_Description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/product_name"
+                            android:hint="Product Description"
+                            android:inputType="textMultiLine"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="5dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -88,42 +111,12 @@
                             android:layout_below="@+id/product_name"
                             android:hint="Base Price"
                             android:inputType="textMultiLine"/>
-
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/product_name"
-                            android:hint="Current Price"
-                            android:inputType="textMultiLine"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/tvP_Description"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/product_name"
-                            android:hint="Product Description"
-                            android:inputType="textMultiLine" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:padding="5dp">
 
                         <TextView
                             android:id="@+id/tvP_Base"
@@ -133,9 +126,31 @@
                             android:hint="Base Price"
                             android:inputType="textMultiLine"/>
                     </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3"
+                    android:orientation="horizontal">
+
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_below="@+id/product_name"
+                            android:hint="Current Price"
+                            android:inputType="textMultiLine" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:padding="5dp">
 
                         <TextView
                             android:id="@+id/tvP_Price"
@@ -147,6 +162,45 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:weightSum="3"-->
+            <!--                    android:orientation="vertical"-->
+            <!--                    android:background="@drawable/appbar"-->
+            <!--                    android:padding="15dp">-->
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_weight="1"-->
+            <!--                        android:gravity="center"-->
+            <!--                        android:orientation="horizontal"-->
+            <!--                        android:paddingLeft="10dp">-->
+
+
+            <!--                    </LinearLayout>-->
+
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_gravity="center"-->
+            <!--                        android:gravity="center"-->
+            <!--                        android:layout_weight="1"-->
+            <!--                        android:orientation="horizontal"-->
+            <!--                        android:paddingLeft="10dp">-->
+
+            <!--                    </LinearLayout>-->
+
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_weight="1"-->
+            <!--                        android:paddingLeft="10dp"-->
+            <!--                        android:gravity="center">-->
+
+            <!--                    </LinearLayout>-->
+            <!--                </LinearLayout>-->
         </LinearLayout>
         <LinearLayout
             android:layout_weight="2"
@@ -157,12 +211,13 @@
             android:gravity="center"
             android:orientation="vertical">
             <LinearLayout
+                android:id="@+id/buyerslayout"
                 android:layout_width="300dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
+                android:background="@drawable/appbar"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:background="@drawable/appbar"
                 android:weightSum="2">
 
                 <LinearLayout
@@ -171,41 +226,44 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:weightSum="3">
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center|right">
+                        android:gravity="center">
 
                         <TextView
+                            android:id="@+id/tvP_Buyer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/product_name"
-                            android:hint="Buyer "
+                            android:hint="Seller"
                             android:inputType="text"
                             android:textSize="20dp"
                             android:textStyle="bold" />
                     </LinearLayout>
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:gravity="center|left"
-                        android:paddingLeft="10dp">
+                        android:layout_weight="1"
+                        android:gravity="center">
+
                         <TextView
-                            android:id="@+id/tvP_Seller"
+                            android:id="@+id/viewprofile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/product_name"
-                            android:hint="Buyer"
+                            android:text="View Profile"
                             android:inputType="text"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
-
+                            android:textColor="@color/blue"
+                            android:textSize="10dp"
+                            android:textStyle="bold"
+                            android:gravity="right"
+                            android:visibility="invisible"/>
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout

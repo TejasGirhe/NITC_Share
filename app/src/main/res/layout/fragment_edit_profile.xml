@@ -215,7 +215,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:hint="Total
                                     Purchases"
                             android:layout_margin="5dp"
@@ -230,6 +230,7 @@
                         android:gravity="center_horizontal">
 
                         <TextView
+                            android:id="@+id/purchases"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="20sp"
@@ -256,7 +257,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:hint="Total
                                     Sales"
                             android:layout_margin="5dp"
@@ -271,6 +272,7 @@
                         android:gravity="center_horizontal">
 
                         <TextView
+                            android:id="@+id/sold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="20sp"

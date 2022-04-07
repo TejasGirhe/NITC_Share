@@ -111,12 +111,12 @@ public class SellActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view) {
 
+
                 AlertDialog.Builder builder =  new AlertDialog.Builder(SellActivity.this);
                 builder.setTitle("Create Ad").setMessage("Are you sure ?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                                 ValidateProductData();
                             }
                         }).setNegativeButton("No", null);
