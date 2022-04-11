@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.nitc_share.adapters.ProductAdapter;
 import com.example.nitc_share.adapters.SPAdapter;
 import com.example.nitc_share.constructors.Products;
+import com.example.nitc_share.constructors.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -89,13 +90,37 @@ public class SalesFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
                         list.clear();
+                        int cnt = 0;
                         for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                             Products products = dataSnapshot.getValue(Products.class);
                             if(products.getSellerid().equals(user.getUid())){
                                 list.add(0,products);
+                                if(products.getSold().equals("Yes")){
+                                    cnt = cnt + 1;
+                                }
                             }
                         }
+                        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users");
+                        ref1 = ref1.child(user.getUid());
+                        int finalCnt = cnt;
+                        ref1.addValueEventListener(new ValueEventListener() {
+                            boolean flag = false;
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(!flag){
+                                    User user1 = snapshot.getValue(User.class);
+                                    if(user1 != null){
+                                        FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("sold").setValue(finalCnt);
+                                        flag = true;
+                                    }
+                                }
+                            }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                         SPAdapter spAdapter = new SPAdapter(getContext(),list);
                         recyclerView.setAdapter(spAdapter);
                         spAdapter.notifyDataSetChanged();

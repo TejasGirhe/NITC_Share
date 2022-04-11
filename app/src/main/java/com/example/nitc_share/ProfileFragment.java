@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +71,7 @@ public class ProfileFragment extends Fragment {
     DatabaseReference reference;
     RatingBar ratingBar;
     SharedPreferences sharedPreferences;
+    LinearLayout editLayout;
     int sales = 0, buys = 0;
 
     private  static  final String SHARED_PREF_NAME = "myPref";
@@ -93,6 +95,7 @@ public class ProfileFragment extends Fragment {
         purchases = view.findViewById(R.id.purchases);
         ratingBar.setClickable(false);
         ratingBar.setFocusable(false);
+        editLayout = view.findViewById(R.id.editLayout);
         TextView logout = view.findViewById(R.id.logoutBtn);
         ImageButton logoutImg = view.findViewById(R.id.logoutImg);
         TextView Edit = view.findViewById(R.id.EditBtn);

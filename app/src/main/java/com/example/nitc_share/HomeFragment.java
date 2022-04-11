@@ -110,6 +110,7 @@ public class HomeFragment extends Fragment{
             }
         });
 
+
         wishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,27 +126,6 @@ public class HomeFragment extends Fragment{
         CheckBox bikes1 = view.findViewById(R.id.bikes1);
         CompoundButtonCompat.setButtonTintList(bikes1, darkStateList);
 
-//        bikes.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                bike = !bike;
-//                if(bike){
-//                    categories.add(0,"Bikes");
-//                    ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.teal_200);
-//                    CompoundButtonCompat.setButtonTintList(bikes1, darkStateList);
-//                    filter(categories);
-//                }else{
-//                    categories.remove("Bikes");
-//                    ColorStateList darkStateList = ContextCompat.getColorStateList(getContext(), R.color.white);
-//                    CompoundButtonCompat.setButtonTintList(bikes1, darkStateList);
-//                    if(categories.size() == 0){
-//                        viewAll();
-//                    }else{
-//                        filter(categories);
-//                    }
-//                }
-//            }
-//        });
         bikes1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -334,6 +314,9 @@ public class HomeFragment extends Fragment{
     }
 
     void filter(ArrayList<String> categories){
+
+//        Toast.makeText(getContext(), searchView.getQuery()+"", Toast.LENGTH_SHORT).show();
+        String str = searchView.getQuery()+"";
         list = new ArrayList<>();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -344,7 +327,7 @@ public class HomeFragment extends Fragment{
                         Products products = dataSnapshot.getValue(Products.class);
                         if(products.getSold().equals("No")){
                             for(String c : categories){
-                                if(products.getCategory().equals(c)){
+                                if(products.getCategory().equals(c) && (products.getCategory().contains(str) ||products.getPname().contains(str))){
                                     list.add(0,products);
                                 }
                             }
@@ -456,9 +439,9 @@ public class HomeFragment extends Fragment{
 
                                     }
                                 }
-                                if(list.isEmpty() && !newText.equals("")){
-                                    Toast.makeText(getContext(), "Product not Found", Toast.LENGTH_SHORT).show();
-                                }
+//                                if(list.isEmpty() && !newText.equals("")){
+//                                    Toast.makeText(getContext(), "Product not Found", Toast.LENGTH_SHORT).show();
+//                                }
                                 productAdapter = new ProductAdapter(getContext(),list);
                                 recyclerView.setAdapter(productAdapter);
                                 productAdapter.notifyDataSetChanged();

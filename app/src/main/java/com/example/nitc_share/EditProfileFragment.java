@@ -32,6 +32,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.util.regex.*;
+
 public class EditProfileFragment extends Fragment {
 
     private static String name;
@@ -110,8 +112,13 @@ public class EditProfileFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(etName.getText().toString().equals("") || etName.getText().toString().equals(null)){
+                String str = etName.getText().toString();
+                str = str.replaceAll(" ", "");
+//                Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
+                if(!isValidUsername(str)){
+                    etName.setError("Please Enter Valid Name");
+                    etName.requestFocus();
+                } else if(etName.getText().toString().equals("") || etName.getText().toString().equals(null)){
                     etName.setError("Please Enter Valid Name");
                     etName.requestFocus();
                 }else if(etPhone.getText().toString().equals("") || etPhone.getText().toString().length()!=10){
@@ -174,5 +181,16 @@ public class EditProfileFragment extends Fragment {
         }
 
         return true;
+    }
+
+    public static boolean isValidUsername(String name)
+    {
+        String regex = "^[A-Za-z]\\w{5,29}$";
+        Pattern p = Pattern.compile(regex);
+        if (name == null) {
+            return false;
+        }
+        Matcher m = p.matcher(name);
+        return m.matches();
     }
 }

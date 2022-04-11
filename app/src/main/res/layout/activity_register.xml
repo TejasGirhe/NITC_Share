@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,168 +7,183 @@
     android:orientation="vertical"
     tools:context=".LoginActivity"
     android:background="#ECEFEF">
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:text="Register"
-            android:textColor="@color/text_color"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            android:transitionName="textview" />
-
-
-        <soup.neumorphism.NeumorphCardView
-            style="@style/Widget.Neumorph.TextView"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="25dp"
-            android:textColorHint="@color/text_color"
-            app:neumorph_lightSource="leftTop"
-            app:neumorph_shapeType="flat">
-
-            <EditText
-                android:id="@+id/etName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autofillHints=""
-                android:gravity="center"
-                android:hint="Name"
-                android:inputType="text"
-                android:padding="14dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/text_color" />
-        </soup.neumorphism.NeumorphCardView>
-
-        <soup.neumorphism.NeumorphCardView
-            style="@style/Widget.Neumorph.TextView"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColorHint="@color/text_color"
-            app:neumorph_lightSource="leftTop"
-            app:neumorph_shapeType="flat">
-
-            <EditText
-                android:id="@+id/etPhone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autofillHints=""
-                android:gravity="center"
-                android:hint=" Phone Number"
-                android:inputType="number"
-                android:padding="14dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/text_color" />
-
-        </soup.neumorphism.NeumorphCardView>
-
-        <soup.neumorphism.NeumorphCardView
-            style="@style/Widget.Neumorph.TextView"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColorHint="@color/text_color"
-            app:neumorph_lightSource="leftTop"
-            app:neumorph_shapeType="flat">
-
-            <EditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autofillHints=""
-                android:gravity="center"
-                android:hint=" Email"
-                android:inputType="textEmailAddress"
-                android:padding="14dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/text_color" />
-
-        </soup.neumorphism.NeumorphCardView>
-        <soup.neumorphism.NeumorphCardView
-            style="@style/Widget.Neumorph.TextView"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColorHint="@color/text_color"
-            app:neumorph_lightSource="leftTop"
-            app:neumorph_shapeType="flat">
-
-            <EditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autofillHints=""
-                android:gravity="center"
-                android:hint=" Password"
-                android:inputType="textPassword"
-                android:padding="14dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/text_color" />
-        </soup.neumorphism.NeumorphCardView>
-        <soup.neumorphism.NeumorphCardView
-            style="@style/Widget.Neumorph.TextView"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColorHint="@color/text_color"
-            app:neumorph_lightSource="leftTop"
-            app:neumorph_shapeType="flat">
-
-            <EditText
-                android:id="@+id/etC_Password"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autofillHints=""
-                android:gravity="center"
-                android:hint="Confirm Password"
-                android:inputType="textPassword"
-                android:padding="14dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/text_color" />
-        </soup.neumorphism.NeumorphCardView>
-
-
-        <Button
-            android:id="@+id/registerBtn"
-            android:layout_width="216dp"
-            android:layout_height="51dp"
-            android:layout_marginLeft="45dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="45dp"
-            android:background="@drawable/appbar"
-            android:text="Register"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/input2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="25dp">
-            <soup.neumorphism.NeumorphTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Already have an account? "/>
-            <soup.neumorphism.NeumorphTextView
-                android:id="@+id/tvlogin"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:text="Register"
+                android:textColor="@color/text_color"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:transitionName="textview" />
+
+
+            <soup.neumorphism.NeumorphCardView
+                style="@style/Widget.Neumorph.TextView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:textColorHint="@color/text_color"
+                app:neumorph_lightSource="leftTop"
+                app:neumorph_shapeType="flat">
+
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint="Name"
+                    android:inputType="text"
+                    android:padding="14dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/text_color" />
+            </soup.neumorphism.NeumorphCardView>
+
+            <soup.neumorphism.NeumorphCardView
+                style="@style/Widget.Neumorph.TextView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColorHint="@color/text_color"
+                app:neumorph_lightSource="leftTop"
+                app:neumorph_shapeType="flat">
+
+                <EditText
+                    android:id="@+id/etPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint=" Phone Number"
+                    android:inputType="number"
+                    android:padding="14dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/text_color" />
+
+            </soup.neumorphism.NeumorphCardView>
+
+            <soup.neumorphism.NeumorphCardView
+                style="@style/Widget.Neumorph.TextView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColorHint="@color/text_color"
+                app:neumorph_lightSource="leftTop"
+                app:neumorph_shapeType="flat">
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint=" Email"
+                    android:inputType="textEmailAddress"
+                    android:padding="14dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/text_color" />
+
+            </soup.neumorphism.NeumorphCardView>
+
+            <soup.neumorphism.NeumorphCardView
+                style="@style/Widget.Neumorph.TextView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColorHint="@color/text_color"
+                app:neumorph_lightSource="leftTop"
+                app:neumorph_shapeType="flat">
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint=" Password"
+                    android:inputType="textPassword"
+                    android:padding="14dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/text_color" />
+            </soup.neumorphism.NeumorphCardView>
+
+            <soup.neumorphism.NeumorphCardView
+                style="@style/Widget.Neumorph.TextView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColorHint="@color/text_color"
+                app:neumorph_lightSource="leftTop"
+                app:neumorph_shapeType="flat">
+
+                <EditText
+                    android:id="@+id/etC_Password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:padding="14dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/text_color" />
+            </soup.neumorphism.NeumorphCardView>
+
+
+            <Button
+                android:id="@+id/registerBtn"
+                android:layout_width="216dp"
+                android:layout_height="51dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="45dp"
+                android:background="@drawable/appbar"
+                android:gravity="center"
+                android:text="Register"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input2" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login here"
-                android:textColor="#047BD5"/>
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp">
+
+                <soup.neumorphism.NeumorphTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Already have an account? " />
+
+                <soup.neumorphism.NeumorphTextView
+                    android:id="@+id/tvlogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login here"
+                    android:textColor="#047BD5" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -110,12 +111,46 @@ public class AdvertActivity extends AppCompatActivity {
 
         tvP_Price.setText(PPrice);
         tvP_Description.setText(PDescription);
-        Glide.with(getApplicationContext()).load(PImage).into(tvP_Image);
+//        Glide.with(getApplicationContext()).load(PImage).into(tvP_Image);
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(getApplicationContext());
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.start();
+
+        Glide.with(tvP_Image.getContext())
+                .load(PImage)
+                .placeholder(circularProgressDrawable)
+                .into(tvP_Image);
 
         // soldornot
         // sold no p,f,d show rate if rated hide
         // not sold hide rate c=s show f,d or c=t show p
         ref = FirebaseDatabase.getInstance().getReference("Users");
+
+        productRef = FirebaseDatabase.getInstance().getReference("Bids").child(Pid);
+        productRef.keepSynced(true);
+        productRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Bids bids1 = null;
+                    for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        bids1 = dataSnapshot.getValue(Bids.class);
+                        if(bids1!=null){
+                            bids.setVisibility(View.VISIBLE);
+                        }else{
+                            bids.setVisibility(View.GONE);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         productRef = FirebaseDatabase.getInstance().getReference("Products").child(Pid);
         productRef.keepSynced(true);
@@ -124,66 +159,67 @@ public class AdvertActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Products products = snapshot.getValue(Products.class);
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(products.getBuyerid());
-                reference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        User user = snapshot.getValue(User.class);
-                        if(user != null){
-                            tvP_Buyer.setText(user.getName());
-                            sellerRating.setRating(user.getRating());
-                            sellerRating.setClickable(false);
+                if(products!=null){
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(products.getBuyerid());
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user = snapshot.getValue(User.class);
+                            if(user != null){
+                                tvP_Buyer.setText(user.getName());
+                                sellerRating.setRating(user.getRating());
+                                sellerRating.setClickable(false);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
+                        }
+                    });
+                    if(!products.getSold().equals(null)){
+                        PSold = products.getSold();//might be null
+                    }else{
+                        PSold = "No";//might be null
                     }
-                });
-                if(!products.getSold().equals(null)){
-                    PSold = products.getSold();//might be null
-                }else{
-                    PSold = "No";//might be null
-                }
-                tvP_Base.setText(products.getBaseprice());
-                tvP_Price.setText(products.getPrice());
+                    tvP_Base.setText(products.getBaseprice());
+                    tvP_Price.setText(products.getPrice());
 
 //                Toast.makeText(getApplicationContext(),String.valueOf(finaliseAd.getVisibility()),Toast.LENGTH_SHORT).show();
 
-                if(PSold.equals("Yes")){
-                    if(ratingLayout.getVisibility() != View.VISIBLE){
-                        ratingLayout.setVisibility(View.VISIBLE);
-                    }
-                    if(buttonslayout.getVisibility() != View.GONE){
-                        buttonslayout.setVisibility(View.GONE);
-                    }
-                    viewprofile.setVisibility(View.VISIBLE);
-                    if(products.getSellerrated().equals("Yes")){
-                        if(ratingLayout.getVisibility() != View.GONE){
-                            ratingLayout.setVisibility(View.GONE);
+                    if(PSold.equals("Yes")){
+                        if(ratingLayout.getVisibility() != View.VISIBLE){
+                            ratingLayout.setVisibility(View.VISIBLE);
                         }
-                    }else{
-                        if(finaliseAd.getVisibility() != View.GONE){
-                            finaliseAd.setVisibility(View.GONE);
+                        if(buttonslayout.getVisibility() != View.GONE){
+                            buttonslayout.setVisibility(View.GONE);
+                        }
+                        viewprofile.setVisibility(View.VISIBLE);
+                        if(products.getSellerrated().equals("Yes")){
+                            if(ratingLayout.getVisibility() != View.GONE){
+                                ratingLayout.setVisibility(View.GONE);
+                            }
+                        }else{
+                            if(finaliseAd.getVisibility() != View.GONE){
+                                finaliseAd.setVisibility(View.GONE);
+                            }
                         }
                     }
-                }
 
-                if(PSold.equals("No")){
+                    if(PSold.equals("No")){
 
-                    if(finaliseAd.getVisibility() != View.VISIBLE){
-                        finaliseAd.setVisibility(View.VISIBLE);
-                    }
-                    if(currentUser.getUid().equals(products.getSellerid())){
                         if(finaliseAd.getVisibility() != View.VISIBLE){
                             finaliseAd.setVisibility(View.VISIBLE);
                         }
-                        if(deleteAd.getVisibility() != View.VISIBLE){
-                            deleteAd.setVisibility(View.VISIBLE);
-                        }
+                        if(currentUser.getUid().equals(products.getSellerid())){
+                            if(finaliseAd.getVisibility() != View.VISIBLE){
+                                finaliseAd.setVisibility(View.VISIBLE);
+                            }
+                            if(deleteAd.getVisibility() != View.VISIBLE){
+                                deleteAd.setVisibility(View.VISIBLE);
+                            }
 
-                    }
+                        }
 //
 //                    if(!(currentUser.getUid().equals(products.getSellerid()))){
 //                        if(finaliseAd.getVisibility() != View.VISIBLE){
@@ -199,10 +235,10 @@ public class AdvertActivity extends AppCompatActivity {
 //                        }
 //                    }
 
-                    if(ratingLayout.getVisibility() != View.GONE){
-                        ratingLayout.setVisibility(View.GONE);
+                        if(ratingLayout.getVisibility() != View.GONE){
+                            ratingLayout.setVisibility(View.GONE);
+                        }
                     }
-                }
 //                if(currentUser.getUid().equals(products.getBuyerid())){
 //                    userReference = FirebaseDatabase.getInstance().getReference("Users").child(products.getSellerid());
 //                    userReference.keepSynced(true);
@@ -221,48 +257,48 @@ public class AdvertActivity extends AppCompatActivity {
 //                    });
 //                }
 
-                if(currentUser.getUid().equals(products.getBuyerid()) || products.getBuyerid().equals("null")){
-                    if(details.getVisibility() != View.VISIBLE){
-                        details.setVisibility(View.VISIBLE);
-                    }
-                    if(products.getBuyerid().equals("null")){
-                        if(bids.getVisibility() != View.GONE){
-                            bids.setVisibility(View.GONE);
+                    if(currentUser.getUid().equals(products.getBuyerid()) || products.getBuyerid().equals("null")){
+                        if(details.getVisibility() != View.VISIBLE){
+                            details.setVisibility(View.VISIBLE);
                         }
-                    }
-                    userReference = FirebaseDatabase.getInstance().getReference("Users").child(products.getBuyerid());
-                    userReference.keepSynced(true);
-                    userReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            User user = snapshot.getValue(User.class);
-                            if(user!=null){
-                                tvP_Buyer.setText(user.getName());
-                                sellerRating.setRating(user.getRating());
+                        if(products.getBuyerid().equals("null")){
+                            if(bids.getVisibility() != View.GONE){
+                                bids.setVisibility(View.GONE);
                             }
                         }
+                        userReference = FirebaseDatabase.getInstance().getReference("Users").child(products.getBuyerid());
+                        userReference.keepSynced(true);
+                        userReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User user = snapshot.getValue(User.class);
+                                if(user!=null){
+                                    tvP_Buyer.setText(user.getName());
+                                    sellerRating.setRating(user.getRating());
+                                }
+                            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
-                }
-                if(currentUser.getUid().equals(products.getSellerid())){
-                    if(products.getBuyerid().equals("null")){
-                        if(details.getVisibility() != View.GONE){
-                            details.setVisibility(View.GONE);
-                        }
-                        if(bids.getVisibility() != View.GONE){
-                            bids.setVisibility(View.GONE);
-                        }
-                        if(finaliseAd.getVisibility() != View.GONE){
-                            finaliseAd.setVisibility(View.GONE);
-                        }
-                        if(deleteAd.getVisibility() != View.VISIBLE){
-                            deleteAd.setVisibility(View.VISIBLE);
-                        }
+                            }
+                        });
                     }
+                    if(currentUser.getUid().equals(products.getSellerid())){
+                        if(products.getBuyerid().equals("null")){
+                            if(details.getVisibility() != View.GONE){
+                                details.setVisibility(View.GONE);
+                            }
+                            if(bids.getVisibility() != View.GONE){
+                                bids.setVisibility(View.GONE);
+                            }
+                            if(finaliseAd.getVisibility() != View.GONE){
+                                finaliseAd.setVisibility(View.GONE);
+                            }
+                            if(deleteAd.getVisibility() != View.VISIBLE){
+                                deleteAd.setVisibility(View.VISIBLE);
+                            }
+                        }
 //                    else{
 //                        if(details.getVisibility() != View.VISIBLE){
 //                            details.setVisibility(View.VISIBLE);
@@ -294,7 +330,9 @@ public class AdvertActivity extends AppCompatActivity {
 //                    }
 
 
+                    }
                 }
+
             }
 
 
@@ -314,12 +352,12 @@ public class AdvertActivity extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(AdvertActivity.this,MainActivity.class));
 
                                 FirebaseDatabase.getInstance().getReference("Products").child(Pid).removeValue();
                                 FirebaseDatabase.getInstance().getReference("Bids").child(Pid).removeValue();
 //                                FirebaseStorage.getInstance().getReference("Product Images").child("products").child(PImage).delete();
                                 FirebaseStorage.getInstance().getReferenceFromUrl(PImage).delete();
-                                startActivity(new Intent(AdvertActivity.this,MainActivity.class));
                             }
                         }).setNegativeButton("No", null);
                 AlertDialog alertDialog = builder.create();
@@ -340,73 +378,6 @@ public class AdvertActivity extends AppCompatActivity {
                                 userReference = FirebaseDatabase.getInstance().getReference().child("Products");
                                 userReference.child(Pid).child("sold").setValue("Yes");
                                 userReference.child(Pid).child("deleteOn").setValue("");
-
-
-                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products");
-                                reference.child(Pid).addValueEventListener(new ValueEventListener() {
-                                    boolean progress = true;
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if(progress){
-                                            Products products = snapshot.getValue(Products.class);
-                                            if(products!=null){
-                                                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users");
-                                                ref1 = ref1.child(products.getSellerid());
-                                                ref1.addValueEventListener(new ValueEventListener() {
-                                                    boolean flag = false;
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                        if(!flag){
-                                                            User user = snapshot.getValue(User.class);
-                                                            if(user != null){
-                                                                int sold = user.getSold();
-                                                                sold = sold + 1;
-                                                                FirebaseDatabase.getInstance().getReference("Users").child(products.getSellerid()).child("sold").setValue(sold);
-                                                                flag = true;
-                                                            }
-                                                        }
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                                    }
-                                                });
-                                                DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users");
-                                                ref2 = ref2.child(products.getBuyerid());
-                                                ref2.addValueEventListener(new ValueEventListener() {
-                                                    boolean flag = false;
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                        if(!flag){
-                                                            User user = snapshot.getValue(User.class);
-                                                            if(user != null){
-                                                                int buys = user.getSold();
-                                                                buys = buys + 1;
-                                                                FirebaseDatabase.getInstance().getReference("Users").child(products.getBuyerid()).child("bought").setValue(buys);
-                                                                flag = true;
-                                                            }
-                                                        }
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                                    }
-                                                });
-                                                progress = false;
-                                            }
-
-                                        }
-
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-
 
                                 if(finaliseAd.getVisibility() != View.GONE){
                                     finaliseAd.setVisibility(View.GONE);

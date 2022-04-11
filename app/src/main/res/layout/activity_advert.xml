@@ -234,15 +234,21 @@
                         android:layout_weight="1"
                         android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/tvP_Buyer"
-                            android:layout_width="wrap_content"
+                        <HorizontalScrollView
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/product_name"
-                            android:hint="Seller"
-                            android:inputType="text"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/tvP_Buyer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/product_name"
+                                android:hint="Seller"
+                                android:inputType="text"
+                                android:textSize="20dp"
+                                android:textStyle="bold" />
+                        </HorizontalScrollView>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -258,7 +264,7 @@
                             android:text="View Profile"
                             android:inputType="text"
                             android:textColor="@color/blue"
-                            android:textSize="10dp"
+                            android:textSize="12dp"
                             android:textStyle="bold"
                             android:gravity="right"
                             android:visibility="invisible"/>
@@ -303,7 +309,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:isIndicator="true"
-                                android:max="5"
                                 android:numStars="5"
                                 android:scaleX="0.8"
                                 android:scaleY="0.8"
@@ -377,8 +382,7 @@
                     android:id="@+id/ratingbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:stepSize="0.25" />
+                    android:stepSize="0.1" />
 
                 <Button
                     android:id="@+id/rate"
@@ -401,12 +405,12 @@
             android:id="@+id/bids"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="3"
             android:background="@drawable/bidlistbg"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="10dp"
             android:weightSum="4"
-            android:layout_weight="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">

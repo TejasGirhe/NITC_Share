@@ -1,5 +1,8 @@
 package com.example.nitc_share;
 
+import static androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -7,12 +10,15 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -29,12 +35,24 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView navigationView;
     FloatingActionButton floatingActionButton;
     ImageButton wishlist;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
+//        Button crashButton = new Button(this);
+//        crashButton.setText("Test Crash");
+//        crashButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                throw new RuntimeException("Test Crash"); // Force a crash
+//            }
+//        });
+//
+//        addContentView(crashButton, new ViewGroup.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT));
 
         ActionBar actionBar;
         actionBar = getSupportActionBar();
@@ -43,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
 //        actionBar.setTitle("Main Activity");
         actionBar.hide();
 
+
         float radius = 73f;
+//        float radius = 0f;
         BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
 
         MaterialShapeDrawable bottomBarBackground = (MaterialShapeDrawable) bottomAppBar.getBackground();
@@ -70,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         navigationView = findViewById(R.id.bottom_navigation);
+
+        navigationView.setKeyboardNavigationCluster(false);
 
         navigationView.setBackground(null);
         navigationView.getMenu().getItem(2).setEnabled(false);

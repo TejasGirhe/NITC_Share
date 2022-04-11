@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.example.nitc_share.AdvertActivity;
@@ -59,10 +60,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.myViewHo
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
 
         Products products = list.get(position);
+//        notifyDataSetChanged();
         holder.PName.setText(products.getPname());
         holder.PDescription.setText(products.getDescription());
         holder.PPrice.setText(products.getPrice());
         holder.BPrice.setText(products.getBaseprice());
+
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.start();
+
+        Glide.with(holder.imageView.getContext())
+                .load(products.getImage())
+                .placeholder(circularProgressDrawable)
+                .into(holder.imageView);
 
         String sDate1 = products.getDeleteOn();
         Date date1 = null;
@@ -77,7 +89,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.myViewHo
             holder.time.setText(strDate);
         }
 
-        Glide.with(holder.imageView.getContext()).load(products.getImage()).into(holder.imageView);
+//        Glide.with(holder.imageView.getContext()).load(products.getImage()).into(holder.imageView);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Wishlist").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseReference.keepSynced(true);

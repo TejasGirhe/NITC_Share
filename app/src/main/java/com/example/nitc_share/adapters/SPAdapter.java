@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.example.nitc_share.AdvertActivity;
@@ -50,7 +51,17 @@ public class SPAdapter extends RecyclerView.Adapter<SPAdapter.myViewHolder >{
         holder.PName.setText(products.getPname());
         holder.PDescription.setText(products.getDescription());
         holder.PPrice.setText(products.getPrice());
-        Glide.with(holder.imageView.getContext()).load(products.getImage()).into(holder.imageView);
+//        Glide.with(holder.imageView.getContext()).load(products.getImage()).into(holder.imageView);
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.start();
+
+        Glide.with(holder.imageView.getContext())
+                .load(products.getImage())
+                .placeholder(circularProgressDrawable)
+                .into(holder.imageView);
+
         holder.BPrice.setText(products.getBaseprice());
         if(products.getSold().equals("Yes")){
             if(products.getSellerid().equals(holder.user.getUid())){

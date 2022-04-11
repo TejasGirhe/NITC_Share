@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -101,7 +103,17 @@ public class BuyersActivity extends AppCompatActivity {
 
         tvP_Price.setText(PPrice);
         tvP_Description.setText(PDescription);
-        Glide.with(getApplicationContext()).load(PImage).into(tvP_Image);
+//        Glide.with(getApplicationContext()).load(PImage).into(tvP_Image);
+
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(getApplicationContext());
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.start();
+
+        Glide.with(tvP_Image.getContext())
+                .load(PImage)
+                .placeholder(circularProgressDrawable)
+                .into(tvP_Image);
 
 
         productRef = FirebaseDatabase.getInstance().getReference("Bids").child(Pid);
@@ -309,126 +321,132 @@ public class BuyersActivity extends AppCompatActivity {
         placeBid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String number1 = amount.getText().toString();
+                String number2 = "2147483647";
+                if(number1.length() < number2.length()) {
 
-                if(bids.getVisibility() != View.VISIBLE){
-                    bids.setVisibility(View.VISIBLE);
+
+                    if(bids.getVisibility() != View.VISIBLE){
+                        bids.setVisibility(View.VISIBLE);
+                    }
+
+                    userReference = FirebaseDatabase.getInstance().getReference().child("Products");
+                    userReference.keepSynced(true);
+                    userReference.child(Pid).addValueEventListener(new ValueEventListener() {
+                        boolean flag = true;
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists() && flag) {
+                                Products p = snapshot.getValue(Products.class);
+                                int i = Integer.parseInt(p.getPrice());
+                                if (!amount.getText().toString().equals("") && amount.getText() != null) {
+                                    int amt = Integer.parseInt(amount.getText().toString());
+                                    if (amt > i) {
+
+                                        PPrice = Integer.toString(amt);
+                                        tvP_Price.setText(PPrice);
+
+                                        userReference.child(Pid).child("price").setValue(PPrice);
+                                        userReference.child(Pid).child("buyerid").setValue(currentUser.getUid());
+
+                                        userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+                                        userReference.keepSynced(true);
+                                        userReference.addValueEventListener(new ValueEventListener() {
+                                            boolean progress = true;
+
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (progress) {
+
+                                                    User user = snapshot.getValue(User.class);
+                                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Bids").child(Pid);
+                                                    databaseReference.keepSynced(true);
+                                                    list = new ArrayList<>();
+                                                    databaseReference.addValueEventListener(new ValueEventListener() {
+
+                                                        Boolean progress = false;
+
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            if (!progress) {
+                                                                list = new ArrayList<>();
+                                                                list.clear();
+                                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                                    list.add(ds.getValue(Bids.class));
+                                                                }
+
+                                                                Bids bids = new Bids();
+                                                                if (list.isEmpty()) {
+                                                                    bids.setBidCount(1);
+                                                                } else {
+                                                                    Bids lastBid = list.get(list.size() - 1);
+                                                                    bids.setBidCount(lastBid.getBidCount() + 1);
+                                                                }
+
+                                                                bids.setBidderid(currentUser.getUid());
+                                                                bids.setPrice(PPrice);
+                                                                list.add(bids);
+
+                                                                Set<Bids> set = new HashSet<>(list);
+                                                                list.clear();
+                                                                list.addAll(set);
+                                                                list = sort(list);
+                                                                Collections.reverse(list);
+
+                                                                databaseReference.setValue(list).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                                                        } else {
+                                                                            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    }
+                                                                });
+
+                                                                RecyclerView recyclerView1 = findViewById(R.id.bid_history);
+                                                                SelfBidsAdapter bidsAdapter = new SelfBidsAdapter(BuyersActivity.this, list, Pid);
+                                                                recyclerView1.setAdapter(bidsAdapter);
+                                                                bidsAdapter.notifyDataSetChanged();
+
+                                                                list.clear();
+                                                                progress = true;
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+                                                    progress = false;
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                        amount.setText("");
+                                    } else {
+                                        Toast.makeText(BuyersActivity.this, "Please Enter Price Greater than Current Price!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                flag = false;
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }else{
+                    Toast.makeText(BuyersActivity.this, "Please Enter Valid Price", Toast.LENGTH_SHORT).show();
+                    amount.setText("");
                 }
 
-                userReference = FirebaseDatabase.getInstance().getReference().child("Products");
-                userReference.keepSynced(true);
-                userReference.child(Pid).addValueEventListener(new ValueEventListener() {
-                    boolean flag = true;
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists() && flag){
-                            Products p = snapshot.getValue(Products.class);
-
-                            int i=Integer.parseInt(p.getPrice());
-
-                            if(!amount.getText().toString().equals("") && amount.getText()!=null){
-                                int amt = Integer.parseInt(amount.getText().toString());
-                                if(amt>i){
-
-                                    PPrice = Integer.toString(amt);
-                                    tvP_Price.setText(PPrice);
-
-                                    userReference.child(Pid).child("price").setValue(PPrice);
-                                    userReference.child(Pid).child("buyerid").setValue(currentUser.getUid());
-
-                                    userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
-                                    userReference.keepSynced(true);
-                                    userReference.addValueEventListener(new ValueEventListener() {
-                                        boolean progress = true;
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            if (progress) {
-
-                                                User user = snapshot.getValue(User.class);
-                                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Bids").child(Pid);
-                                                databaseReference.keepSynced(true);
-                                                list = new ArrayList<>();
-                                                databaseReference.addValueEventListener(new ValueEventListener() {
-
-                                                    Boolean progress = false;
-
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                        if (!progress) {
-                                                            list = new ArrayList<>();
-                                                            list.clear();
-                                                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                                                list.add(ds.getValue(Bids.class));
-                                                            }
-
-                                                            Bids bids = new Bids();
-                                                            if (list.isEmpty()) {
-                                                                bids.setBidCount(1);
-                                                            } else {
-                                                                Bids lastBid = list.get(list.size() - 1);
-                                                                bids.setBidCount(lastBid.getBidCount() + 1);
-                                                            }
-
-                                                            bids.setBidderid(currentUser.getUid());
-                                                            bids.setPrice(PPrice);
-                                                            list.add(bids);
-
-                                                            Set<Bids> set = new HashSet<>(list);
-                                                            list.clear();
-                                                            list.addAll(set);
-                                                            list = sort(list);
-                                                            Collections.reverse(list);
-
-                                                            databaseReference.setValue(list).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                    if (task.isSuccessful()) {
-                                                                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                                                                    } else {
-                                                                        Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                }
-                                                            });
-
-                                                            RecyclerView recyclerView1 = findViewById(R.id.bid_history);
-                                                            SelfBidsAdapter bidsAdapter = new SelfBidsAdapter(BuyersActivity.this, list, Pid);
-                                                            recyclerView1.setAdapter(bidsAdapter);
-                                                            bidsAdapter.notifyDataSetChanged();
-
-                                                            list.clear();
-                                                            progress = true;
-                                                        }
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                                    }
-                                                });
-                                                progress = false;
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-                                    amount.setText("");
-                                }
-                                else
-                                {
-                                    Toast.makeText(BuyersActivity.this, "Please Enter Price Greater than Current Price!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            flag = false;
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
 
             }
         });
@@ -560,8 +578,10 @@ public class BuyersActivity extends AppCompatActivity {
                 list.clear();
                 int curr = 0;
                 int prev = 0;
+                int cnt = 0;
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Bids bids = ds.getValue(Bids.class);
+                    cnt = cnt + 1;
                     if (curruser.getUid().equals(bids.getBidderid())) {
                         list.add(0, bids);
                         if(bids.getBidCount()==1) {
@@ -576,11 +596,34 @@ public class BuyersActivity extends AppCompatActivity {
 //                        FirebaseDatabase.getInstance().getReference("Products").child(Pid).child("price").setValue(bids.getPrice());
                     }
                 }
+                if(cnt == 0){
+//                    Toast.makeText(BuyersActivity.this, "0 Bids", Toast.LENGTH_SHORT).show();
+                    FirebaseDatabase.getInstance().getReference("Products").child(Pid).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()){
+                                Products products = snapshot.getValue(Products.class);
+                                if(products!=null){
+                                    if(list.size() == 0){
+                                        tvP_Price.setText(products.getBaseprice());
+//                                        FirebaseDatabase.getInstance().getReference("Products").child(Pid).child("price").setValue(products.getBaseprice());
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
                 RecyclerView recyclerView1 = findViewById(R.id.bid_history);
                 if(list.size() == 0){
                     if(BidsLL.getVisibility() != View.INVISIBLE){
                         BidsLL.setVisibility(View.INVISIBLE);
                     }
+
                 }else{
                     if(BidsLL.getVisibility() != View.VISIBLE){
                         BidsLL.setVisibility(View.VISIBLE);

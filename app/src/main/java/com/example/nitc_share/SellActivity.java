@@ -81,7 +81,7 @@ public class SellActivity extends AppCompatActivity implements AdapterView.OnIte
 //        actionBar.hide();
 
         dropdown = findViewById(R.id.dropdown_menu);
-        String[] items = new String[]{"Select Category","Mobile", "Bikes", "Electronics","Fashion", "Stationary","Books","Furniture", " Appliances"};
+        String[] items = new String[]{"Select Category","Mobile", "Bikes", "Electronics","Fashion", "Stationary","Books","Furniture", "Appliances"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
 

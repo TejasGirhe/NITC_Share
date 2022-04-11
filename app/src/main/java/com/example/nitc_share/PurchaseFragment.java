@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.nitc_share.adapters.ProductAdapter;
 import com.example.nitc_share.adapters.SPAdapter;
 import com.example.nitc_share.constructors.Bids;
 import com.example.nitc_share.constructors.Products;
+import com.example.nitc_share.constructors.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -95,6 +97,32 @@ public class PurchaseFragment extends Fragment {
                         list.clear();
                         for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                             Products products = dataSnapshot.getValue(Products.class);
+                            int count = 0;
+
+                            if(products.getSold().equals("Yes") && products.getBuyerid().equals(user.getUid())){
+                                count = count + 1;
+                            }
+                            DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users");
+                            ref2 = ref2.child(products.getBuyerid());
+                            int finalCount = count;
+                            ref2.addValueEventListener(new ValueEventListener() {
+                                boolean flag = false;
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(!flag){
+                                        User user = snapshot.getValue(User.class);
+                                        if(user != null){
+                                            FirebaseDatabase.getInstance().getReference("Users").child(products.getBuyerid()).child("bought").setValue(finalCount);
+                                            flag = true;
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
 
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Bids").child(products.getPid());
                             ref.addValueEventListener(new ValueEventListener() {
@@ -113,6 +141,7 @@ public class PurchaseFragment extends Fragment {
                                                 list.remove(products);
                                                 list.add(0,products);
                                             }
+
                                         }
 
                                         SPAdapter spAdapter = new SPAdapter(getContext(),list);
